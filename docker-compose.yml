@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  abetta-xp:
+    container_name: abetta-xp
+    image: abettame/abetta-xp:latest
+    environment:
+    - SPRING_PROFILES_ACTIVE=cloud,docker
+  abetta-gateway:
+    container_name: abetta-gateway
+    image: abettame/abetta-gateway:latest
+    ports:
+      - 8080:8080
+    environment:
+    - SPRING_PROFILES_ACTIVE=docker
