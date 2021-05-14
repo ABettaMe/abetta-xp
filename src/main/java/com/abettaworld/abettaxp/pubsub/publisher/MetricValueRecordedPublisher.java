@@ -5,11 +5,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DummyMessagePublisher implements MessagePublisher {
+public class MetricValueRecordedPublisher implements MessagePublisher {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public DummyMessagePublisher(RedisTemplate<String, Object> redisTemplate) {
+    public MetricValueRecordedPublisher(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

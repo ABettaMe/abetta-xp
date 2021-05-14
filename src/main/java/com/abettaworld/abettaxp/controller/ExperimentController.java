@@ -1,6 +1,7 @@
 package com.abettaworld.abettaxp.controller;
 
 import com.abettaworld.abettaxp.dto.ExperimentDto;
+import com.abettaworld.abettaxp.dto.MetricDto.MetricValueDto;
 import com.abettaworld.abettaxp.service.ExperimentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -47,5 +48,21 @@ public class ExperimentController {
                                            @RequestHeader(value = "userLastName", required = false) String userLastName,
                                            @RequestHeader(value = "userPictureUrl", required = false) String userPictureUrl) {
         return experimentService.getExperimentById(experimentId);
+    }
+
+    @PostMapping("/{experimentId}/control-metrics/{metricName}/records")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ExperimentDto addExperimentControlMetricRecord(@NotNull @PathVariable("experimentId") UUID experimentId,
+                                                          @NotNull @PathVariable("metricName") String metricName,
+                                                          @RequestBody MetricValueDto metricValueRequest) {
+        return experimentService.addExperimentControlMetricRecord(experimentId, metricName, metricValueRequest);
+    }
+
+    @PostMapping("/{experimentId}/treatment-metrics/{metricName}/records")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ExperimentDto addExperimentTreatmentMetricRecord(@NotNull @PathVariable("experimentId") UUID experimentId,
+                                                            @NotNull @PathVariable("metricName") String metricName,
+                                                            @RequestBody MetricValueDto metricValueRequest) {
+        return experimentService.addExperimentTreatmentMetricRecord(experimentId, metricName, metricValueRequest);
     }
 }
