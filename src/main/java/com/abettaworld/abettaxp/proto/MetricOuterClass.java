@@ -362,7 +362,7 @@ public final class MetricOuterClass {
                 MetricOuterClass.MetricValue.class, MetricOuterClass.MetricValue.Builder.class);
       }
 
-      // Construct using com.abettaworld.abettaxp.proto.MetricOuterClass.MetricValue.newBuilder()
+      // Construct using MetricOuterClass.MetricValue.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1209,7 +1209,7 @@ public final class MetricOuterClass {
                 MetricOuterClass.Metric.class, MetricOuterClass.Metric.Builder.class);
       }
 
-      // Construct using com.abettaworld.abettaxp.proto.MetricOuterClass.Metric.newBuilder()
+      // Construct using MetricOuterClass.Metric.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }

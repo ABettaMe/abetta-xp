@@ -11,8 +11,12 @@ import com.abettaworld.abettaxp.proto.UserOuterClass.User;
 import com.abettaworld.abettaxp.pubsub.publisher.MetricValueRecordedPublisher;
 import com.abettaworld.abettaxp.service.ExperimentService;
 import com.abettaworld.abettaxp.service.RedisService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
+import com.google.protobuf.util.JsonFormat;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -34,6 +38,9 @@ public class ExperimentServiceImpl implements ExperimentService {
     private final RedisService redisService;
 
     private final MetricValueRecordedPublisher metricValuePublisher;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public ExperimentServiceImpl(RedisService redisService, MetricValueRecordedPublisher metricValuePublisher) {
         this.redisService = redisService;
@@ -65,8 +72,11 @@ public class ExperimentServiceImpl implements ExperimentService {
     private void updateUserExperiments(String userId, Experiment experiment) {
         User.Builder userBuilder = User.newBuilder().setId(userId);
 
-        Optional<User> persistedUser = redisService.getResourceByLookupKey(getUserLookupKey(userId), User.class);
-        persistedUser.ifPresent(userBuilder::mergeFrom);
+        Optional<User.Builder> optionalBuilder =
+                redisService.getResourceByLookupKey(getUserLookupKey(userId), User.newBuilder());
+        optionalBuilder.ifPresent(builder -> {
+            userBuilder.mergeFrom(builder.build());
+        });
 
         userBuilder.addExperiments(ExperimentInfo.newBuilder()
                 .setId(experiment.getId())
@@ -78,8 +88,19 @@ public class ExperimentServiceImpl implements ExperimentService {
 
     @Override
     public List<ExperimentDto> getExperimentsByUserId(String userId) {
-        String[] userExperimentKeys = getExperimentLookupKeysByUserId(userId);
-        List<Experiment> experiments = redisService.getResourcesByLookupKeys(userExperimentKeys, Experiment.class);
+            String[] userExperimentKeys = getExperimentLookupKeysByUserId(userId);
+        List<Experiment> experiments = redisService.getResourcesByLookupKeys(userExperimentKeys).stream()
+                .map(experiment -> {
+                    try {
+                        Experiment.Builder builder = Experiment.newBuilder();
+                        JsonFormat.parser().ignoringUnknownFields().merge(experiment, builder);
+                        return builder.build();
+                    } catch (InvalidProtocolBufferException e) {
+                        log.error("Something went wrong when parsing the payload.");
+                        throw new RuntimeException("Something went wrong when parsing the payload.");
+                    }
+                })
+                .collect(Collectors.toList());
         return experiments.stream()
                 .map(ExperimentDto::new)
                 .collect(Collectors.toList());
@@ -87,10 +108,11 @@ public class ExperimentServiceImpl implements ExperimentService {
 
     private String[] getExperimentLookupKeysByUserId(String userId) {
         String[] lookupKeys;
-        Optional<User> user = redisService.getResourceByLookupKey(getUserLookupKey(userId), User.class);
-        return user
-                .map(presentUser -> {
-                    return presentUser.getExperimentsList().stream()
+        Optional<User.Builder> optionalBuilder =
+                redisService.getResourceByLookupKey(getUserLookupKey(userId), User.newBuilder());
+        return optionalBuilder
+                .map(presentBuilder -> {
+                    return presentBuilder.getExperimentsList().stream()
                             .map(experimentInfo -> getExperimentLookupKey(experimentInfo.getId()))
                             .toArray(String[]::new);
                 })
@@ -101,9 +123,13 @@ public class ExperimentServiceImpl implements ExperimentService {
 
     @Override
     public ExperimentDto getExperimentById(UUID experimentId) {
-        Optional<Experiment> experiment =
-                redisService.getResourceByLookupKey(getExperimentLookupKey(experimentId.toString()), Experiment.class);
-        return experiment.map(ExperimentDto::new)
+        Optional<Experiment.Builder> experimentBuilder = redisService.getResourceByLookupKey(
+                getExperimentLookupKey(experimentId.toString()), Experiment.newBuilder());
+        return experimentBuilder
+                .map(builder -> {
+                    Experiment experiment = builder.build();
+                    return new ExperimentDto(experiment);
+                })
                 .orElseThrow(() ->
                         new ResourceNotFoundException(format("Could not find experiment with id {0}",
                                 experimentId)));
@@ -113,10 +139,12 @@ public class ExperimentServiceImpl implements ExperimentService {
     public ExperimentDto addExperimentControlMetricRecord(UUID experimentId,
                                                           String metricName,
                                                           MetricValueDto metricValueRequest) {
-        Optional<Experiment> experiment =
-                redisService.getResourceByLookupKey(getExperimentLookupKey(experimentId.toString()), Experiment.class);
-        return experiment.map(presentExperiment -> {
-            Experiment.Builder experimentBuilder = Experiment.newBuilder().mergeFrom(presentExperiment);
+
+        Optional<Experiment.Builder> optionalBuilder = redisService.getResourceByLookupKey(
+                getExperimentLookupKey(experimentId.toString()), Experiment.newBuilder());
+
+        return optionalBuilder.map(presentBuilder -> {
+            Experiment.Builder experimentBuilder = Experiment.newBuilder().mergeFrom(presentBuilder.build());
             List<Metric> controlMetrics = experimentBuilder.getMetricsControlList();
 
             int metricIndex = IntStream.range(0, controlMetrics.size())
@@ -146,10 +174,11 @@ public class ExperimentServiceImpl implements ExperimentService {
     public ExperimentDto addExperimentTreatmentMetricRecord(UUID experimentId,
                                                           String metricName,
                                                           MetricValueDto metricValueRequest) {
-        Optional<Experiment> experiment =
-                redisService.getResourceByLookupKey(getExperimentLookupKey(experimentId.toString()), Experiment.class);
-        return experiment.map(presentExperiment -> {
-            Experiment.Builder experimentBuilder = Experiment.newBuilder().mergeFrom(presentExperiment);
+        Optional<Experiment.Builder> optionalBuilder = redisService.getResourceByLookupKey(
+                getExperimentLookupKey(experimentId.toString()), Experiment.newBuilder());
+
+        return optionalBuilder.map(presentBuilder -> {
+            Experiment.Builder experimentBuilder = Experiment.newBuilder().mergeFrom(presentBuilder.build());
             List<Metric> treatmentMetrics = experimentBuilder.getMetricsTreatmentList();
 
             int metricIndex = IntStream.range(0, treatmentMetrics.size())

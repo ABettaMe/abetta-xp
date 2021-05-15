@@ -1,6 +1,10 @@
 package com.abettaworld.abettaxp.service.impl;
 
 import com.abettaworld.abettaxp.service.RedisService;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
+import com.google.protobuf.MessageOrBuilder;
+import com.google.protobuf.util.JsonFormat;
 import com.redislabs.modules.rejson.JReJSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,15 +24,22 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public <T> void saveResource(String lookupKey, T resource) {
-        reJsonClient.set(lookupKey, resource);
+    public void saveResource(String lookupKey, MessageOrBuilder resource) {
+        String payload = null;
+        try {
+            payload = JsonFormat.printer().print(resource);
+            reJsonClient.set(lookupKey, payload);
+        } catch (InvalidProtocolBufferException e) {
+            log.info("Something went wrong when trying to save resource.");
+        }
     }
 
     @Override
-    public <T> Optional<T> getResourceByLookupKey(String lookupKey, Class<T> clazz) {
+    public <T extends Message.Builder> Optional<T> getResourceByLookupKey(String lookupKey, T builder) {
         try {
-            T resource = reJsonClient.get(lookupKey, clazz);
-            return Optional.of(resource);
+            String payload = reJsonClient.get(lookupKey);
+            JsonFormat.parser().ignoringUnknownFields().merge(payload, builder);
+            return Optional.of(builder);
         } catch (Exception exception) {
             log.info("Resource doesn't exist?");
             return Optional.empty();
@@ -36,9 +47,9 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public <T> List<T> getResourcesByLookupKeys(String[] lookupKeys, Class<T> clazz) {
+    public List<String> getResourcesByLookupKeys(String[] lookupKeys) {
         try {
-            return reJsonClient.mget(clazz, lookupKeys);
+            return reJsonClient.mget(String.class, lookupKeys);
         } catch (Exception exception) {
             log.info("Resources doesn't exist?");
             return Collections.emptyList();

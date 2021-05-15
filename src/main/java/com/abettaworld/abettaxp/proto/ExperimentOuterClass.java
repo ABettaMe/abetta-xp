@@ -55,7 +55,7 @@ public final class ExperimentOuterClass {
     /**
      * <code>repeated .Metric metrics_control = 4;</code>
      */
-    java.util.List<MetricOuterClass.Metric> 
+    java.util.List<MetricOuterClass.Metric>
         getMetricsControlList();
     /**
      * <code>repeated .Metric metrics_control = 4;</code>
@@ -152,6 +152,30 @@ public final class ExperimentOuterClass {
      */
     com.google.protobuf.ByteString
         getDescriptionTreatmentBytes();
+
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    java.util.List<RecommendationOuterClass.Recommendation> 
+        getRecommendationsList();
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    RecommendationOuterClass.Recommendation getRecommendations(int index);
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    int getRecommendationsCount();
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    java.util.List<? extends RecommendationOuterClass.RecommendationOrBuilder> 
+        getRecommendationsOrBuilderList();
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    RecommendationOuterClass.RecommendationOrBuilder getRecommendationsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code Experiment}
@@ -173,6 +197,7 @@ public final class ExperimentOuterClass {
       metricsTreatment_ = java.util.Collections.emptyList();
       status_ = 0;
       descriptionTreatment_ = "";
+      recommendations_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -280,6 +305,15 @@ public final class ExperimentOuterClass {
               descriptionTreatment_ = s;
               break;
             }
+            case 82: {
+              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+                recommendations_ = new java.util.ArrayList<RecommendationOuterClass.Recommendation>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              recommendations_.add(
+                  input.readMessage(RecommendationOuterClass.Recommendation.parser(), extensionRegistry));
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -300,6 +334,9 @@ public final class ExperimentOuterClass {
         }
         if (((mutable_bitField0_ & 0x00000002) != 0)) {
           metricsTreatment_ = java.util.Collections.unmodifiableList(metricsTreatment_);
+        }
+        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+          recommendations_ = java.util.Collections.unmodifiableList(recommendations_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -738,6 +775,46 @@ public final class ExperimentOuterClass {
       }
     }
 
+    public static final int RECOMMENDATIONS_FIELD_NUMBER = 10;
+    private java.util.List<RecommendationOuterClass.Recommendation> recommendations_;
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    @java.lang.Override
+    public java.util.List<RecommendationOuterClass.Recommendation> getRecommendationsList() {
+      return recommendations_;
+    }
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends RecommendationOuterClass.RecommendationOrBuilder> 
+        getRecommendationsOrBuilderList() {
+      return recommendations_;
+    }
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    @java.lang.Override
+    public int getRecommendationsCount() {
+      return recommendations_.size();
+    }
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    @java.lang.Override
+    public RecommendationOuterClass.Recommendation getRecommendations(int index) {
+      return recommendations_.get(index);
+    }
+    /**
+     * <code>repeated .Recommendation recommendations = 10;</code>
+     */
+    @java.lang.Override
+    public RecommendationOuterClass.RecommendationOrBuilder getRecommendationsOrBuilder(
+        int index) {
+      return recommendations_.get(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -778,6 +855,9 @@ public final class ExperimentOuterClass {
       }
       if (!getDescriptionTreatmentBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, descriptionTreatment_);
+      }
+      for (int i = 0; i < recommendations_.size(); i++) {
+        output.writeMessage(10, recommendations_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -820,6 +900,10 @@ public final class ExperimentOuterClass {
       if (!getDescriptionTreatmentBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, descriptionTreatment_);
       }
+      for (int i = 0; i < recommendations_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, recommendations_.get(i));
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -858,6 +942,8 @@ public final class ExperimentOuterClass {
       if (status_ != other.status_) return false;
       if (!getDescriptionTreatment()
           .equals(other.getDescriptionTreatment())) return false;
+      if (!getRecommendationsList()
+          .equals(other.getRecommendationsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -895,6 +981,10 @@ public final class ExperimentOuterClass {
       hash = (53 * hash) + status_;
       hash = (37 * hash) + DESCRIPTION_TREATMENT_FIELD_NUMBER;
       hash = (53 * hash) + getDescriptionTreatment().hashCode();
+      if (getRecommendationsCount() > 0) {
+        hash = (37 * hash) + RECOMMENDATIONS_FIELD_NUMBER;
+        hash = (53 * hash) + getRecommendationsList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1010,7 +1100,7 @@ public final class ExperimentOuterClass {
                 ExperimentOuterClass.Experiment.class, ExperimentOuterClass.Experiment.Builder.class);
       }
 
-      // Construct using com.abettaworld.abettaxp.proto.ExperimentOuterClass.Experiment.newBuilder()
+      // Construct using ExperimentOuterClass.Experiment.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1025,6 +1115,7 @@ public final class ExperimentOuterClass {
                 .alwaysUseFieldBuilders) {
           getMetricsControlFieldBuilder();
           getMetricsTreatmentFieldBuilder();
+          getRecommendationsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -1064,6 +1155,12 @@ public final class ExperimentOuterClass {
 
         descriptionTreatment_ = "";
 
+        if (recommendationsBuilder_ == null) {
+          recommendations_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          recommendationsBuilder_.clear();
+        }
         return this;
       }
 
@@ -1124,6 +1221,15 @@ public final class ExperimentOuterClass {
         }
         result.status_ = status_;
         result.descriptionTreatment_ = descriptionTreatment_;
+        if (recommendationsBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) != 0)) {
+            recommendations_ = java.util.Collections.unmodifiableList(recommendations_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.recommendations_ = recommendations_;
+        } else {
+          result.recommendations_ = recommendationsBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -1248,6 +1354,32 @@ public final class ExperimentOuterClass {
         if (!other.getDescriptionTreatment().isEmpty()) {
           descriptionTreatment_ = other.descriptionTreatment_;
           onChanged();
+        }
+        if (recommendationsBuilder_ == null) {
+          if (!other.recommendations_.isEmpty()) {
+            if (recommendations_.isEmpty()) {
+              recommendations_ = other.recommendations_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensureRecommendationsIsMutable();
+              recommendations_.addAll(other.recommendations_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.recommendations_.isEmpty()) {
+            if (recommendationsBuilder_.isEmpty()) {
+              recommendationsBuilder_.dispose();
+              recommendationsBuilder_ = null;
+              recommendations_ = other.recommendations_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              recommendationsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getRecommendationsFieldBuilder() : null;
+            } else {
+              recommendationsBuilder_.addAllMessages(other.recommendations_);
+            }
+          }
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1648,7 +1780,7 @@ public final class ExperimentOuterClass {
           java.lang.Iterable<? extends MetricOuterClass.Metric> values) {
         if (metricsControlBuilder_ == null) {
           ensureMetricsControlIsMutable();
-          addAll(
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
               values, metricsControl_);
           onChanged();
         } else {
@@ -1888,7 +2020,7 @@ public final class ExperimentOuterClass {
           java.lang.Iterable<? extends MetricOuterClass.Metric> values) {
         if (metricsTreatmentBuilder_ == null) {
           ensureMetricsTreatmentIsMutable();
-          addAll(
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
               values, metricsTreatment_);
           onChanged();
         } else {
@@ -2354,6 +2486,246 @@ public final class ExperimentOuterClass {
         onChanged();
         return this;
       }
+
+      private java.util.List<RecommendationOuterClass.Recommendation> recommendations_ =
+        java.util.Collections.emptyList();
+      private void ensureRecommendationsIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          recommendations_ = new java.util.ArrayList<RecommendationOuterClass.Recommendation>(recommendations_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          RecommendationOuterClass.Recommendation, RecommendationOuterClass.Recommendation.Builder, RecommendationOuterClass.RecommendationOrBuilder> recommendationsBuilder_;
+
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public java.util.List<RecommendationOuterClass.Recommendation> getRecommendationsList() {
+        if (recommendationsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(recommendations_);
+        } else {
+          return recommendationsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public int getRecommendationsCount() {
+        if (recommendationsBuilder_ == null) {
+          return recommendations_.size();
+        } else {
+          return recommendationsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public RecommendationOuterClass.Recommendation getRecommendations(int index) {
+        if (recommendationsBuilder_ == null) {
+          return recommendations_.get(index);
+        } else {
+          return recommendationsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder setRecommendations(
+          int index, RecommendationOuterClass.Recommendation value) {
+        if (recommendationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRecommendationsIsMutable();
+          recommendations_.set(index, value);
+          onChanged();
+        } else {
+          recommendationsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder setRecommendations(
+          int index, RecommendationOuterClass.Recommendation.Builder builderForValue) {
+        if (recommendationsBuilder_ == null) {
+          ensureRecommendationsIsMutable();
+          recommendations_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          recommendationsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder addRecommendations(RecommendationOuterClass.Recommendation value) {
+        if (recommendationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRecommendationsIsMutable();
+          recommendations_.add(value);
+          onChanged();
+        } else {
+          recommendationsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder addRecommendations(
+          int index, RecommendationOuterClass.Recommendation value) {
+        if (recommendationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRecommendationsIsMutable();
+          recommendations_.add(index, value);
+          onChanged();
+        } else {
+          recommendationsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder addRecommendations(
+          RecommendationOuterClass.Recommendation.Builder builderForValue) {
+        if (recommendationsBuilder_ == null) {
+          ensureRecommendationsIsMutable();
+          recommendations_.add(builderForValue.build());
+          onChanged();
+        } else {
+          recommendationsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder addRecommendations(
+          int index, RecommendationOuterClass.Recommendation.Builder builderForValue) {
+        if (recommendationsBuilder_ == null) {
+          ensureRecommendationsIsMutable();
+          recommendations_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          recommendationsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder addAllRecommendations(
+          java.lang.Iterable<? extends RecommendationOuterClass.Recommendation> values) {
+        if (recommendationsBuilder_ == null) {
+          ensureRecommendationsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, recommendations_);
+          onChanged();
+        } else {
+          recommendationsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder clearRecommendations() {
+        if (recommendationsBuilder_ == null) {
+          recommendations_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          recommendationsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public Builder removeRecommendations(int index) {
+        if (recommendationsBuilder_ == null) {
+          ensureRecommendationsIsMutable();
+          recommendations_.remove(index);
+          onChanged();
+        } else {
+          recommendationsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public RecommendationOuterClass.Recommendation.Builder getRecommendationsBuilder(
+          int index) {
+        return getRecommendationsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public RecommendationOuterClass.RecommendationOrBuilder getRecommendationsOrBuilder(
+          int index) {
+        if (recommendationsBuilder_ == null) {
+          return recommendations_.get(index);  } else {
+          return recommendationsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public java.util.List<? extends RecommendationOuterClass.RecommendationOrBuilder> 
+           getRecommendationsOrBuilderList() {
+        if (recommendationsBuilder_ != null) {
+          return recommendationsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(recommendations_);
+        }
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public RecommendationOuterClass.Recommendation.Builder addRecommendationsBuilder() {
+        return getRecommendationsFieldBuilder().addBuilder(
+            RecommendationOuterClass.Recommendation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public RecommendationOuterClass.Recommendation.Builder addRecommendationsBuilder(
+          int index) {
+        return getRecommendationsFieldBuilder().addBuilder(
+            index, RecommendationOuterClass.Recommendation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .Recommendation recommendations = 10;</code>
+       */
+      public java.util.List<RecommendationOuterClass.Recommendation.Builder> 
+           getRecommendationsBuilderList() {
+        return getRecommendationsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          RecommendationOuterClass.Recommendation, RecommendationOuterClass.Recommendation.Builder, RecommendationOuterClass.RecommendationOrBuilder> 
+          getRecommendationsFieldBuilder() {
+        if (recommendationsBuilder_ == null) {
+          recommendationsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              RecommendationOuterClass.Recommendation, RecommendationOuterClass.Recommendation.Builder, RecommendationOuterClass.RecommendationOrBuilder>(
+                  recommendations_,
+                  ((bitField0_ & 0x00000004) != 0),
+                  getParentForChildren(),
+                  isClean());
+          recommendations_ = null;
+        }
+        return recommendationsBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2422,31 +2794,35 @@ public final class ExperimentOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\020Experiment.proto\032\037google/protobuf/time" +
-      "stamp.proto\032\014Metric.proto\"\336\002\n\nExperiment" +
-      "\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\033\n\023descriptio" +
-      "n_control\030\003 \001(\t\022 \n\017metrics_control\030\004 \003(\013" +
-      "2\007.Metric\022\"\n\021metrics_treatment\030\005 \003(\0132\007.M" +
-      "etric\022+\n\007created\030\006 \001(\0132\032.google.protobuf" +
-      ".Timestamp\022-\n\tcompleted\030\007 \001(\0132\032.google.p" +
-      "rotobuf.Timestamp\022\"\n\006status\030\010 \001(\0162\022.Expe" +
-      "riment.Status\022\035\n\025description_treatment\030\t" +
-      " \001(\t\"4\n\006Status\022\017\n\013NOT_STARTED\020\000\022\n\n\006ACTIV" +
-      "E\020\001\022\r\n\tCOMPLETED\020\002b\006proto3"
+      "stamp.proto\032\014Metric.proto\032\024Recommendatio" +
+      "n.proto\"\210\003\n\nExperiment\022\n\n\002id\030\001 \001(\t\022\014\n\004na" +
+      "me\030\002 \001(\t\022\033\n\023description_control\030\003 \001(\t\022 \n" +
+      "\017metrics_control\030\004 \003(\0132\007.Metric\022\"\n\021metri" +
+      "cs_treatment\030\005 \003(\0132\007.Metric\022+\n\007created\030\006" +
+      " \001(\0132\032.google.protobuf.Timestamp\022-\n\tcomp" +
+      "leted\030\007 \001(\0132\032.google.protobuf.Timestamp\022" +
+      "\"\n\006status\030\010 \001(\0162\022.Experiment.Status\022\035\n\025d" +
+      "escription_treatment\030\t \001(\t\022(\n\017recommenda" +
+      "tions\030\n \003(\0132\017.Recommendation\"4\n\006Status\022\017" +
+      "\n\013NOT_STARTED\020\000\022\n\n\006ACTIVE\020\001\022\r\n\tCOMPLETED" +
+      "\020\002b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.TimestampProto.getDescriptor(),
           MetricOuterClass.getDescriptor(),
+          RecommendationOuterClass.getDescriptor(),
         });
     internal_static_Experiment_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_Experiment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Experiment_descriptor,
-        new java.lang.String[] { "Id", "Name", "DescriptionControl", "MetricsControl", "MetricsTreatment", "Created", "Completed", "Status", "DescriptionTreatment", });
+        new java.lang.String[] { "Id", "Name", "DescriptionControl", "MetricsControl", "MetricsTreatment", "Created", "Completed", "Status", "DescriptionTreatment", "Recommendations", });
     com.google.protobuf.TimestampProto.getDescriptor();
     MetricOuterClass.getDescriptor();
+    RecommendationOuterClass.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

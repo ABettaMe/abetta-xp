@@ -43,6 +43,8 @@ public class ExperimentDto {
 
     private List<MetricDto> treatmentMetrics = new ArrayList<>();
 
+    private List<RecommendationDto> recommendations = new ArrayList<>();
+
     public ExperimentDto(Experiment experiment) {
         this.id = experiment.getId();
         this.name = experiment.getName();
@@ -54,6 +56,9 @@ public class ExperimentDto {
                 .collect(Collectors.toList());
         this.treatmentMetrics = experiment.getMetricsTreatmentList().stream()
                 .map(MetricDto::new)
+                .collect(Collectors.toList());
+        this.recommendations = experiment.getRecommendationsList().stream()
+                .map(RecommendationDto::new)
                 .collect(Collectors.toList());
     }
 }

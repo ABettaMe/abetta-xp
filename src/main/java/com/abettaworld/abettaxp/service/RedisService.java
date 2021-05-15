@@ -1,13 +1,16 @@
 package com.abettaworld.abettaxp.service;
 
+import com.google.protobuf.Message;
+import com.google.protobuf.MessageOrBuilder;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface RedisService {
 
-    <T> void saveResource(String lookupKey, T resource);
+    void saveResource(String lookupKey, MessageOrBuilder resource);
 
-    <T>  Optional<T> getResourceByLookupKey(String lookupKey, Class<T> clazz);
+    <T extends Message.Builder> Optional<T> getResourceByLookupKey(String lookupKey, T builder);
 
-    <T> List<T> getResourcesByLookupKeys(String[] lookupKeys, Class<T> clazz);
+    List<String> getResourcesByLookupKeys(String[] lookupKeys);
 }
