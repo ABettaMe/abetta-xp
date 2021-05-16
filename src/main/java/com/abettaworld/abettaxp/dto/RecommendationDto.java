@@ -1,6 +1,7 @@
 package com.abettaworld.abettaxp.dto;
 
 import com.abettaworld.abettaxp.proto.RecommendationOuterClass.Recommendation;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class RecommendationDto {
 
     private Double treatmentAverage;
 
+    @JsonProperty("pValue")
     private Double pValue;
 
     public RecommendationDto(Recommendation recommendation) {
